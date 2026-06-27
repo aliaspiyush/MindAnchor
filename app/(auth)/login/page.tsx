@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
@@ -17,30 +18,7 @@ export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setError(error.message);
-        setIsLoading(false);
-        return;
-      }
-
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      setError("An unexpected error occurred.");
-      setIsLoading(false);
-    }
-  };
+  // handleLogin removed since Google OAuth is the only method
 
   const handleGoogleLogin = async () => {
     try {
@@ -59,55 +37,24 @@ export default function LoginPage() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary">
-            <Anchor size={24} strokeWidth={2.5} />
-          </div>
+          <Image src="/logo.png" alt="MindAnchor Logo" width={64} height={64} className="mx-auto rounded-xl shadow-sm object-cover" />
           <CardTitle className="text-3xl">Welcome back</CardTitle>
           <p className="text-sm text-text-muted">Enter your details to sign in to your account</p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <Input
-              label="Email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Input
-              label="Password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            
-            {error && (
-              <div className="rounded-md bg-danger/10 p-3 text-sm text-danger border border-danger/20">
-                {error}
-              </div>
-            )}
-
-            <Button type="submit" className="w-full" isLoading={isLoading}>
-              Sign In
-            </Button>
-          </form>
-
-          <div className="my-6 flex items-center">
-            <div className="flex-1 border-t border-border"></div>
-            <span className="px-3 text-xs text-text-muted uppercase tracking-wider">Or continue with</span>
-            <div className="flex-1 border-t border-border"></div>
-          </div>
+          {error && (
+            <div className="rounded-md bg-danger/10 p-3 mb-4 text-sm text-danger border border-danger/20">
+              {error}
+            </div>
+          )}
 
           <Button 
-            variant="secondary" 
-            className="w-full" 
+            variant="default" 
+            className="w-full py-6 text-base" 
             onClick={handleGoogleLogin}
             type="button"
           >
-            Google
+            Continue with Google
           </Button>
 
           <div className="mt-6 text-center text-sm text-text-muted">
