@@ -6,13 +6,17 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code')
 
   if (code) {
-    const supabase = await createClient()
-    
-    // Exchange the code for a session
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    
-    if (!error) {
-      // Check if user has completed onboarding (e.g. has an exam_type set)
+    try {
+      const supabase = await createClient()
+      
+      // Exchange the code for a session
+      const { error } = await supabase.auth.exchangeCodeForSession(code)
+      
+      if (error) {
+        return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message)}`, request.url))
+      }
+
+      // Check if user has completed onboarding
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         const { data: profile } = await supabase
@@ -22,13 +26,15 @@ export async function GET(request: Request) {
           .single()
           
         if (!profile?.exam_type) {
-          return NextResponse.redirect(new URL('/onboarding', requestUrl.origin))
+          return NextResponse.redirect(new URL('/onboarding', request.url))
         }
       }
-      return NextResponse.redirect(new URL('/dashboard', requestUrl.origin))
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    } catch (err: any) {
+      return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(err.message)}`, request.url))
     }
   }
 
   // If there's an error or no code, redirect to login
-  return NextResponse.redirect(new URL('/login', request.url))
+  return NextResponse.redirect(new URL('/login?error=no_auth_code', request.url))
 }
