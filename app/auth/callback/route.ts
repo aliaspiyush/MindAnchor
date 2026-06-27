@@ -30,5 +30,5 @@ export async function GET(request: Request) {
   }
 
   // If there's an error or no code, redirect to login
-  return NextResponse.redirect(new URL('/auth/login', request.url))
+  return NextResponse.redirect(new URL('/login', request.url))
 }

@@ -40,12 +40,12 @@ export async function middleware(request: NextRequest) {
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = '/auth/login';
+    url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
   // Auth routes — redirect to dashboard if already authenticated
-  const authRoutes = ['/auth/login', '/auth/signup'];
+  const authRoutes = ['/login', '/signup'];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
   if (user && isAuthRoute) {

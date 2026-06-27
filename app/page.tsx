@@ -25,7 +25,7 @@ export default function LandingPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/auth/signup">
+            <Link href="/signup">
               <Button size="lg" className="w-full sm:w-auto h-14 px-8 text-lg rounded-full">
                 Start Free
               </Button>

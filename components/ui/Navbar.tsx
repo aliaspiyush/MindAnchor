@@ -88,10 +88,10 @@ export default function Navbar() {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <Link href="/auth/login">
+            <Link href="/login">
               <Button variant="ghost" size="sm">Log In</Button>
             </Link>
-            <Link href="/auth/signup">
+            <Link href="/signup">
               <Button size="sm">Get Started</Button>
             </Link>
           </div>
