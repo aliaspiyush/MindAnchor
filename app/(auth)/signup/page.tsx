@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
@@ -23,14 +22,15 @@ export default function SignupPage() {
 
   const handleGoogleSignup = async () => {
     try {
-      await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
-    } catch (err) {
-      setError("Failed to initialize Google signup.");
+      if (error) throw error;
+    } catch (err: any) {
+      setError(err.message || "Failed to initialize Google signup.");
     }
   };
 
@@ -38,7 +38,9 @@ export default function SignupPage() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-4">
-          <Image src="/logo.png" alt="MindAnchor Logo" width={64} height={64} className="mx-auto rounded-xl shadow-sm object-cover" />
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary">
+            <Anchor size={24} strokeWidth={2.5} />
+          </div>
           <CardTitle className="text-3xl">Create an account</CardTitle>
           <p className="text-sm text-text-muted">Start your journey to a balanced exam prep</p>
         </CardHeader>

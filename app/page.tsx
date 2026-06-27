@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Anchor, BrainCircuit, Activity, LineChart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -13,7 +12,9 @@ export default function LandingPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="relative z-10 max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <Image src="/logo.png" alt="MindAnchor Logo" width={80} height={80} className="mx-auto rounded-2xl shadow-xl shadow-primary/20 mb-8 object-cover" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-background shadow-xl shadow-primary/20 mb-8">
+            <Anchor size={32} strokeWidth={2.5} />
+          </div>
           
           <h1 className="font-serif text-5xl md:text-7xl leading-tight text-text-primary">
             Your exam journey starts with <span className="text-gradient">understanding yourself.</span>
