@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ScoreBar } from "./ScoreBar";
 import { Sparkles, Activity, ShieldAlert } from "lucide-react";
-import { getBurnoutColor, getBurnoutLabel } from "@/lib/utils";
+import { getBurnoutColor } from "@/lib/utils";
 
 // Note: Ensure getBurnoutLabel is in utils, or map it here.
 const burnoutLabels = {

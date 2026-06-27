@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import type { CompanionContext, CompanionResponse, ChatMessage } from '@/types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -44,10 +44,10 @@ const companionTools = [
         description:
           'Initiate a guided breathing exercise when the student is feeling anxious, stressed, or overwhelmed. Use this instead of just telling them to breathe.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             duration_minutes: {
-              type: 'NUMBER' as const,
+              type: SchemaType.NUMBER,
               description: 'Duration of the breathing session in minutes (1-10)',
             },
           },
@@ -59,10 +59,10 @@ const companionTools = [
         description:
           'Show a grounding exercise to help the student reconnect with the present moment during panic or dissociation.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             technique: {
-              type: 'STRING' as const,
+              type: SchemaType.STRING,
               enum: ['5-4-3-2-1', 'box_breathing', 'body_scan'],
               description: 'The grounding technique to use',
             },
@@ -75,14 +75,14 @@ const companionTools = [
         description:
           'Display a personalized affirmation card when the student needs confidence boosting or positive reinforcement.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             exam_type: {
-              type: 'STRING' as const,
+              type: SchemaType.STRING,
               description: 'The exam the student is preparing for',
             },
             mood_context: {
-              type: 'STRING' as const,
+              type: SchemaType.STRING,
               description: 'The current emotional context for personalization',
             },
           },
@@ -94,10 +94,10 @@ const companionTools = [
         description:
           'Suggest a lighter study plan when the student is burned out or overstudying. Provides a modified approach to reduce pressure.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             reason: {
-              type: 'STRING' as const,
+              type: SchemaType.STRING,
               description: 'Why a lighter plan is being suggested',
             },
           },
@@ -109,11 +109,11 @@ const companionTools = [
         description:
           'Provide targeted encouragement and focus strategies for specific weak subjects the student is struggling with.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             weak_subjects: {
-              type: 'ARRAY' as const,
-              items: { type: 'STRING' as const },
+              type: SchemaType.ARRAY,
+              items: { type: SchemaType.STRING },
               description: 'The subjects to focus on',
             },
           },
@@ -125,10 +125,10 @@ const companionTools = [
         description:
           'Activate rest mode when the student needs to step away from studying. Shows a calming interface with a timer.',
         parameters: {
-          type: 'OBJECT' as const,
+          type: SchemaType.OBJECT,
           properties: {
             duration_hours: {
-              type: 'NUMBER' as const,
+              type: SchemaType.NUMBER,
               description: 'Recommended rest duration in hours',
             },
           },
@@ -137,7 +137,7 @@ const companionTools = [
       },
     ],
   },
-];
+] as any;
 
 /**
  * Chat with the AI companion. Handles both text responses and function calling.

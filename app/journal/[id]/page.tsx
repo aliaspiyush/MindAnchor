@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { ArrowLeft, MessageSquareText, BrainCircuit, AlertTriangle } from "lucide-react";
 
-export default async function JournalEntryPage({ params }: { params: { id: string } }) {
+export default async function JournalEntryPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
