@@ -50,7 +50,7 @@ export default function SignupPage() {
           )}
 
           <Button 
-            variant="default" 
+            variant="primary" 
             className="w-full py-6 text-base" 
             onClick={handleGoogleSignup}
             type="button"

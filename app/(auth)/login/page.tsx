@@ -49,7 +49,7 @@ export default function LoginPage() {
           )}
 
           <Button 
-            variant="default" 
+            variant="primary" 
             className="w-full py-6 text-base" 
             onClick={handleGoogleLogin}
             type="button"
