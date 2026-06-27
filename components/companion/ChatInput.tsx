@@ -35,6 +35,7 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
         size="lg" 
         disabled={!text.trim() || isLoading}
         className="rounded-full w-12 h-12 p-0 flex items-center justify-center shrink-0"
+        aria-label="Send message"
       >
         <SendHorizontal size={20} className={text.trim() && !isLoading ? "text-background" : "text-text-muted"} />
       </Button>

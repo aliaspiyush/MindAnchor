@@ -1,20 +1,12 @@
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import type { GeminiAnalysisOutput } from '@/types';
+import { ANALYSIS_SYSTEM_PROMPT } from './prompts';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-const ANALYSIS_SYSTEM_PROMPT = `You are MindAnchor's emotional intelligence engine. Analyze the student's journal entry deeply. Look for hidden stress signals, cognitive distortions, burnout indicators, and exam-related anxiety patterns. Return ONLY a strict JSON object — no prose, no markdown.
-
-Consider these dimensions:
-- Mood: overall emotional valence (1=very negative, 10=very positive)
-- Stress: physiological and psychological pressure (1=calm, 10=overwhelmed)
-- Confidence: self-efficacy about exam performance (1=no confidence, 10=very confident)
-- Burnout risk: based on exhaustion, cynicism, and reduced efficacy signals
-- Dominant emotion: the primary emotion expressed
-- Stress triggers: specific identifiable causes of stress mentioned or implied
-- Cognitive patterns: any cognitive distortions or thinking patterns (e.g., catastrophizing, all-or-nothing thinking, comparison spiraling)
-- Support priority: how urgently this student needs supportive intervention
-- Insight: a 1-2 sentence empathetic observation about the student's state`;
+export function buildAnalysisPrompt(entryText: string): string {
+  return `Analyze this student journal entry:\n\n"${entryText}"`;
+}
 
 const analysisResponseSchema = {
   type: SchemaType.OBJECT,
@@ -77,6 +69,21 @@ const analysisResponseSchema = {
  * Analyze a journal entry using Gemini structured output.
  * Returns a typed GeminiAnalysisOutput object.
  */
+export function parseAnalysisResponse(responseText: string): GeminiAnalysisOutput {
+  const analysis: GeminiAnalysisOutput = JSON.parse(responseText);
+
+  // Clamp scores to valid range
+  analysis.mood_score = Math.max(1, Math.min(10, analysis.mood_score));
+  analysis.stress_score = Math.max(1, Math.min(10, analysis.stress_score));
+  analysis.confidence_score = Math.max(1, Math.min(10, analysis.confidence_score));
+
+  return analysis;
+}
+
+/**
+ * Analyze a journal entry using Gemini structured output.
+ * Returns a typed GeminiAnalysisOutput object.
+ */
 export async function analyzeJournalEntry(
   entryText: string
 ): Promise<GeminiAnalysisOutput> {
@@ -90,17 +97,9 @@ export async function analyzeJournalEntry(
     },
   });
 
-  const result = await model.generateContent(
-    `Analyze this student journal entry:\n\n"${entryText}"`
-  );
+  const prompt = buildAnalysisPrompt(entryText);
+  const result = await model.generateContent(prompt);
 
   const responseText = result.response.text();
-  const analysis: GeminiAnalysisOutput = JSON.parse(responseText);
-
-  // Clamp scores to valid range
-  analysis.mood_score = Math.max(1, Math.min(10, analysis.mood_score));
-  analysis.stress_score = Math.max(1, Math.min(10, analysis.stress_score));
-  analysis.confidence_score = Math.max(1, Math.min(10, analysis.confidence_score));
-
-  return analysis;
+  return parseAnalysisResponse(responseText);
 }

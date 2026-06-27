@@ -19,6 +19,20 @@ export function daysUntilExam(examDate: string | null): number | null {
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
+export function getDaysUntilExam(examDate: string | null): number | null {
+  return daysUntilExam(examDate);
+}
+
+/**
+ * Get mood label based on score
+ */
+export function getMoodLabel(score: number): 'Critical' | 'Low' | 'Moderate' | 'Good' {
+  if (score >= 1 && score <= 3) return 'Critical';
+  if (score >= 4 && score <= 5) return 'Low';
+  if (score >= 6 && score <= 7) return 'Moderate';
+  return 'Good';
+}
+
 /**
  * Format a date string for display
  */

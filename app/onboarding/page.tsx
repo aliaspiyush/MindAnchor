@@ -115,11 +115,15 @@ export default function OnboardingPage() {
                 <p className="text-text-muted">We'll adjust our support as the date gets closer.</p>
               </div>
               <div className="pt-4">
+                <label htmlFor="exam-date" className="block text-sm font-medium text-text-muted mb-2">Exam Date</label>
                 <input
+                  id="exam-date"
                   type="date"
                   value={examDate}
                   onChange={(e) => setExamDate(e.target.value)}
                   className="w-full rounded-lg bg-surface-elevated border border-border p-4 text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 text-lg"
+                  required
+                  aria-required="true"
                 />
               </div>
             </div>
