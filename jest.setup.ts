@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom';
 
+// JSDOM doesn't support layout and scroll methods, polyfill them
+if (typeof window !== 'undefined') {
+  window.HTMLElement.prototype.scrollIntoView = jest.fn();
+}
+
 // Global mocks
 export const mockSupabase = {
   auth: {

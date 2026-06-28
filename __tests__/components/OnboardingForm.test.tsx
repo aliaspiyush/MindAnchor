@@ -61,12 +61,13 @@ describe('OnboardingPage Flow', () => {
       error: null,
     });
 
-    const mockUpdate = jest.fn().mockResolvedValue({ error: null });
+    const mockUpdate = jest.fn().mockReturnThis();
+    const mockEq = jest.fn().mockResolvedValue({ error: null });
     mockSupabase.from.mockImplementation((table: string) => {
       if (table === 'profiles') {
         return {
           update: mockUpdate,
-          eq: jest.fn().mockReturnThis(),
+          eq: mockEq,
         };
       }
       return mockSupabase;
